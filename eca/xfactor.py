@@ -1,6 +1,9 @@
 from eca import *
 
 import random
+from eca.generators import start_offline_tweets
+import datetime
+import textwrap
 
 ## You might have to update the root path to point to the correct path
 ## (by default, it points to <rules>_static)
@@ -13,6 +16,7 @@ import random
 def setup(ctx, e):
     ctx.count = 0
     fire('sample', {'previous': 0.0})
+    start_offline_tweets('eca/data/xfactor.txt', 'alltweets', time_factor=10000)
 
 
 # define a normal Python function
@@ -37,3 +41,17 @@ def generate_sample(ctx, e):
     # chain event
     fire('sample', {'previous': sample}, delay=0.40)
 
+@event('alltweets')
+def tweet(ctx, e):
+    # we receive a tweet
+    tweet = e.data
+
+    # parse date
+    time = datetime.datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S %z %Y')
+
+    # nicify text
+    text = textwrap.fill(tweet['text'],initial_indent='    ', subsequent_indent='    ')
+
+    # generate output
+    output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
+    emit('tweet', output)

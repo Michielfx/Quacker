@@ -43,6 +43,8 @@ The <code>@event</code> part tells the system to fire the action whenever the ev
 </div>
 <div id="graph" class="grid_8 vert_4"></div>
 
+<div id='tweets' class='grid_12 vert_4'></div>
+
 <script>
 // create a rolling chart block
 block('#graph').rolling_chart({
@@ -60,6 +62,10 @@ block('#graph').rolling_chart({
 
 // connect sample event to graph
 events.connect('sample', '#graph');
+
+block('#tweets').log();
+events.connect('alltweets','#tweets');
+
 </script>
 </body>
 </html>
