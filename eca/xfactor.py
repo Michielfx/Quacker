@@ -5,6 +5,7 @@ from eca.generators import start_offline_tweets
 import datetime
 import textwrap
 
+
 ## You might have to update the root path to point to the correct path
 ## (by default, it points to <rules>_static)
 # root_content_path = 'template_static'
@@ -41,3 +42,4 @@ def tweet(ctx, e):
 
 def pop_at_acc(ctx, e):
     # Noah is working on this
+    pass
