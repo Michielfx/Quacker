@@ -15,31 +15,8 @@ import textwrap
 @event('init')
 def setup(ctx, e):
     ctx.count = 0
-    fire('sample', {'previous': 0.0})
-    start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=10000)
+    start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=1000)
 
-
-# define a normal Python function
-def clip(lower, value, upper):
-    return max(lower, min(value, upper))
-
-@event('sample')
-def generate_sample(ctx, e):
-    ctx.count += 1
-    if ctx.count % 50 == 0:
-        emit('debug', {'text': 'Log message #'+str(ctx.count)+'!'})
-
-    # base sample on previous one
-    sample = clip(-100, e.data['previous'] + random.uniform(+5.0, -5.0), 100)
-
-    # emit to outside world
-    emit('sample',{
-        'action': 'add',
-        'value': sample
-    })
-    
-    # chain event
-    fire('sample', {'previous': sample}, delay=0.40)
 
 @event('tweets')
 def tweet(ctx, e):
@@ -55,4 +32,4 @@ def tweet(ctx, e):
 
     # generate output
     output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
-    emit('tweets', output)
+    emit('tweets', tweet)
