@@ -10,6 +10,7 @@
 <script src="/lib/core.js"></script>
 <script src="/lib/charts.js"></script>
 <script src="/lib/log.js"></script>
+<script src="/lib/tweets.js"></script>
 </head>
 <body class="container_12">
 <h1>ECA Dashboard Template</h1>
@@ -63,9 +64,13 @@ block('#graph').rolling_chart({
 // connect sample event to graph
 events.connect('sample', '#graph');
 
-block('#tweets').log();
-events.connect('alltweets','#tweets');
+
 
 </script>
+<script>
+    block('#tweets').tweets({
+        memory: 10
+    });
+    events.connect('tweets','#tweets');</script>
 </body>
 </html>

@@ -16,7 +16,7 @@ import textwrap
 def setup(ctx, e):
     ctx.count = 0
     fire('sample', {'previous': 0.0})
-    start_offline_tweets('eca/data/xfactor.txt', 'alltweets', time_factor=10000)
+    start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=10000)
 
 
 # define a normal Python function
@@ -41,8 +41,9 @@ def generate_sample(ctx, e):
     # chain event
     fire('sample', {'previous': sample}, delay=0.40)
 
-@event('alltweets')
+@event('tweets')
 def tweet(ctx, e):
+    print("Tweet")
     # we receive a tweet
     tweet = e.data
 
@@ -54,4 +55,4 @@ def tweet(ctx, e):
 
     # generate output
     output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
-    emit('tweet', output)
+    emit('tweets', output)
