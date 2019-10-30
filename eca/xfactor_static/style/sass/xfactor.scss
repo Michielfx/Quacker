@@ -1,0 +1,60 @@
+.xdash{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 50px 1fr 1fr;
+    grid-template-areas: "header header header"
+                         "tweets none none"
+                         "tweets none none";
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    padding: 0.2rem 1rem 1rem 1rem;
+    gap:1rem;
+}
+
+.xheader{
+    grid-area: header;
+}
+
+.left-container{
+    display: flex;
+    flex-direction: column;
+    grid-area: tweets;
+    max-height: 100%;
+    height: 100%;
+    width: 100%; 
+    max-width: 100%;
+    overflow: hidden;   
+}
+
+.tweet-input{
+    border-radius: 2rem;
+    border-color: #1b95e0 !important;
+    border-style: solid !important;
+    // border:  0.1rem  #3344EE !important;
+}
+
+.tweet-list-container{
+    margin-bottom: 1rem;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    
+}
+
+.tweet-list{
+    border-radius: 0.8rem;
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    .stream-item{
+        border-radius: 1rem !important;
+        border: none !important;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
+    }
+}
