@@ -22,9 +22,10 @@ def setup(ctx, e):
 
     # Noah Values:
     ctx.pop_dic = {}
+    ctx.pop_rem = []
     # ----------------------------
 
-    start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=1000)
+    start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=10000)
 
 
 @event('tweets')
@@ -42,11 +43,12 @@ def tweet(ctx, e):
 
     # nicify text
     text = textwrap.fill(tweet['text'],initial_indent='    ', subsequent_indent='    ')
-
+    '''
     # generate output
     output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
     if predict_prob([tweet]) < 0.6 and detect(tweet) == 'en':
         emit('tweets', tweet)
+    '''
 
 
 
