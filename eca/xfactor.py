@@ -45,7 +45,7 @@ def tweet(ctx, e):
 
     # generate output
     output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
-    if predict_prob([tweet]) < 0.6 && detect(tweet) == 'en':
+    if predict_prob([tweet]) < 0.6 and detect(tweet) == 'en':
         emit('tweets', tweet)
 
 
