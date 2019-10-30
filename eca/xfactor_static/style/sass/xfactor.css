@@ -5,7 +5,7 @@
       grid-template-columns: 1fr 1fr 1fr;
   -ms-grid-rows: 50px 1fr 1fr;
       grid-template-rows: 50px 1fr 1fr;
-      grid-template-areas: "header header header" "tweets none none" "tweets none none";
+      grid-template-areas: "header header header" "tweets a b" "tweets positivity c";
   height: 100vh;
   max-height: 100vh;
   margin: 0;
@@ -20,7 +20,26 @@
   grid-area: header;
 }
 
+.pop-country-container {
+  -ms-grid-row: 2;
+  -ms-grid-column: 2;
+  grid-area: a;
+  width: 100%;
+  height: 100%;
+}
+
+.positivity-container {
+  -ms-grid-row: 3;
+  -ms-grid-column: 2;
+  grid-area: positivity;
+  height: 100%;
+}
+
 .left-container {
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  -ms-grid-column: 1;
+  grid-area: tweets;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -28,10 +47,6 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -ms-grid-row: 2;
-  -ms-grid-row-span: 2;
-  -ms-grid-column: 1;
-  grid-area: tweets;
   max-height: 100%;
   height: 100%;
   width: 100%;

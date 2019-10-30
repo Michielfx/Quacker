@@ -1,3 +1,4 @@
 call %userprofile%\Anaconda3\Scripts\activate.bat
-python eca\neca.py -s eca\xfactor.py
+cd eca
+python neca.py -s xfactor.py
 @pause

@@ -3,8 +3,8 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 50px 1fr 1fr;
     grid-template-areas: "header header header"
-                         "tweets none none"
-                         "tweets none none";
+                         "tweets a b"
+                         "tweets positivity c";
     height: 100vh;
     max-height: 100vh;
     margin: 0;
@@ -15,11 +15,25 @@
 .xheader{
     grid-area: header;
 }
+// .xheader{
+//     grid-area: header;
+// }
+
+.pop-country-container{
+    grid-area: a;
+    width: 100%;
+    height: 100%;
+}
+
+.positivity-container{
+    grid-area: positivity;
+    height: 100%;
+}
 
 .left-container{
+    grid-area: tweets;
     display: flex;
     flex-direction: column;
-    grid-area: tweets;
     max-height: 100%;
     height: 100%;
     width: 100%; 

@@ -4,16 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>XFactor</title>
-<!-- <link rel="stylesheet" href="/style/layout.css"/> -->
+
 <link rel="stylesheet" href="/style/theme.css"/>
 <link rel="stylesheet" href="/style/backoffice.min.css"/>
 <link rel="stylesheet" href="/style/sass/xfactor.css"/>
-<script src="/lib/jquery-2.1.1.min.js"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script> -->
+<script src="/lib/Chart.bundle.min.js"></script>
+
+
+<!-- <script src="/lib/jquery-2.1.1.min.js"></script> OLD JQuery-->
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> Flot might not work with this version of jquery -->
+<script src="/lib/jquery-3.4.1.min.js"></script> <!--Flot might not work with this version of jquery-->
+
+
 <script src="/lib/jquery.flot.min.js"></script>
 <script src="/lib/core.js"></script>
 <script src="/lib/charts.js"></script>
 <script src="/lib/log.js"></script>
 <script src="/lib/tweets.js"></script>
+
 </head>
 <body class="xdash">
     <div class="xheader">
@@ -29,9 +40,18 @@
     <input class="tweet-input" placeholder="  Tweet!" type="text"/>
 </div>
     
+<div class="positivity-container">
+    <canvas class="positivity-canvas" height="100%" width="100%" id="posCanvas"></canvas>
+</div>
+
+<div class="pop-country-container">
+
+</div>
     
+<!-- Popularity Chart -->
 
 
+<!-- Uni Tweet Formatters -->
 <script>
 // Entity formatters for use by tweet list
 var entity_formatters = {
@@ -100,7 +120,7 @@ var process_entities = function(message, entities) {
 }
 </script>
 
-
+<!-- Tweets -->
 <script>
 
 // create the necessary HTML in the block container
@@ -156,11 +176,80 @@ var process_entities = function(message, entities) {
             list.prepend($item);
 
             // remove stale tweets
-            if (list.children().size() > 20) {
+            if (list.children().length > 20) {
                 list.children().last().remove();
             }
         });
     
+</script>
+
+<script>
+        var ctx = document.getElementById('posCanvas').getContext('2d');
+        var color = Chart.helpers.color;
+        var fill = ctx.createPattern
+        $(document).ready(function (){
+            var popData = {
+                labels: ["Positivity"],
+
+                datasets: [
+                    {
+                        label: "Negative",
+                        backgroundColor: "rgba(200, 40, 40, 0.5)",
+                        borderColor: "rgba(200, 40, 40, 1)",
+                        borderWidth: 1,
+                        data: [-0.4]
+                    }
+                    ,
+                    {
+                        label: "Positive",
+                        backgroundColor: "rgba(40, 200, 40, 0.5)",
+                        borderColor: "rgba(40, 200, 40, 1)",
+                        borderWidth: 1,
+                        data: [0.6]
+                    }
+                ]
+            }
+    
+            let popChart = new Chart(ctx, {
+                type: 'bar',
+                data: popData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: false,
+
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks:{
+                                suggestedMin: -1,
+                                suggestedMax: 1
+                            }
+                        }]
+                    }
+                }
+            });
+
+            e.addEventListener('mood', function(d) {
+                try {
+                    var m = JSON.parse(d.data);
+                } catch(err) {
+                    console.exception("Received malformed message: ", err);
+                    return;
+                }
+
+                // popChart.data.datasets[0].data[0] = 0.1;
+                popChart.update();
+            });
+        });
+        
+        
+    
     </script>
+
 </body>
 </html>
