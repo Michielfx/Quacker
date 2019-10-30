@@ -1,6 +1,8 @@
 from eca import *
 
 import random
+from profanity_check import predict, predict_prob
+from langdetect import detect
 from eca.generators import start_offline_tweets
 import datetime
 import textwrap
@@ -43,7 +45,8 @@ def tweet(ctx, e):
 
     # generate output
     output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
-    emit('tweets', tweet)
+    if predict_prob([tweet]) < 0.6 && detect(tweet) == 'en':
+        emit('tweets', tweet)
 
 
 
