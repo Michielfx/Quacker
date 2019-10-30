@@ -4,6 +4,7 @@ import random
 from eca.generators import start_offline_tweets
 import datetime
 import textwrap
+from popularity_account_noah import *
 
 
 ## You might have to update the root path to point to the correct path
@@ -16,6 +17,11 @@ import textwrap
 @event('init')
 def setup(ctx, e):
     ctx.count = 0
+
+    # Noah Values:
+    ctx.pop_dic = {}
+    # ----------------------------
+
     start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=1000)
 
 
@@ -26,7 +32,7 @@ def tweet(ctx, e):
 
     # ----------------------------
     # Noah is working on this
-    pop_at_acc(ctx, e)
+    pop_at_acc(ctx, tweet)
     # ----------------------------
 
     # parse date
@@ -40,6 +46,4 @@ def tweet(ctx, e):
     emit('tweets', tweet)
 
 
-def pop_at_acc(ctx, e):
-    # Noah is working on this
-    pass
+
