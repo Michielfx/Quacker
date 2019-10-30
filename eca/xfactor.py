@@ -45,7 +45,7 @@ def tweet(ctx, e):
     text = textwrap.fill(tweet['text'],initial_indent='    ', subsequent_indent='    ')
 
     # generate output
-    output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
+    # output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
     if predict_prob([tweet['text']]) < 0.6 and detect(tweet['text']) == 'en':
         emit('tweets', tweet)
 

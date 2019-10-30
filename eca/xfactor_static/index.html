@@ -45,7 +45,7 @@
 </div>
 
 <div class="pop-country-container">
-
+        
 </div>
     
 <!-- Popularity Chart -->
@@ -137,13 +137,6 @@ var process_entities = function(message, entities) {
                 return;
             }
 
-            var $item = $('<li class="stream-item"></li>');
-
-            var $tweet = $('<div class="tweet"></div>');
-            var $content = $('<div class="content"></div>');
-            var $header = $('<div class="stream-item-header"></div>');
-
-            // Build a tag image and header:
             var $account = $('<a class="account-group"></a>');
             $account.attr("href", "http://twitter.com/" + tweet.user.screen_name);
 
@@ -153,27 +146,30 @@ var process_entities = function(message, entities) {
             $account.append($('<strong class="fullname">' + tweet.user.name + '</strong>'));
             $account.append($('<span>&nbsp;</span>'));
             $account.append($('<span class="username"><s>@</s><b>' + tweet.user.screen_name + '</b></span>'));
-            $header.append($account);
 
-            // Build timestamp:
             var $time = $('<small class="time"></small>');
             $time.append($('<span>' + tweet.created_at + '</span>'));
-
-            $header.append($time);
-            $content.append($header);
 
             // Build contents:
             var text = process_entities(tweet.text, tweet.entities);
             var $text = $('<p class="tweet-text">' + text + '</p>');
-            $content.append($text);
 
-            // Build outer structure of containing divs:
-            $tweet.append($content);
-            $item.append($tweet);
+            var item = `
+            <li class="stream-item">
+                <div class="tweet">
+                    <div class="content">
+                        <div class="stream-item-header">
+                            ${$account.html()}
+                            <small class="time"><span>${$time.html()}</span></small>
+                        </div>
+                        <p class="tweet-text">${$text.html()}</p>
+                    </div>
+                </div>
+            </li>`;
 
             var list = $('#tweetlist');
             // place new tweet in front of list 
-            list.prepend($item);
+            list.prepend(item);
 
             // remove stale tweets
             if (list.children().length > 20) {
