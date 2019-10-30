@@ -20,9 +20,13 @@ def setup(ctx, e):
 
 @event('tweets')
 def tweet(ctx, e):
-    print("Tweet")
     # we receive a tweet
     tweet = e.data
+
+    # ----------------------------
+    # Noah is working on this
+    pop_at_acc(ctx, e)
+    # ----------------------------
 
     # parse date
     time = datetime.datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S %z %Y')
@@ -33,3 +37,7 @@ def tweet(ctx, e):
     # generate output
     output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
     emit('tweets', tweet)
+
+
+def pop_at_acc(ctx, e):
+    # Noah is working on this
