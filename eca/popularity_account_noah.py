@@ -23,6 +23,6 @@ def pop_at_acc(ctx, tweet):
     for i in l:
         del ctx.pop_rem[i]
 
-    print(ctx.pop_dic)
+    #print(ctx.pop_dic)
 
 
