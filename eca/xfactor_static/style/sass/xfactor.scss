@@ -35,8 +35,13 @@ html{
 
 .pop-country-container{
     grid-area: popcountry;
+    background-color: $foreground-color;
     width: 100%;
+    // padding: 0;
+    // padding: 1rem 0 1rem 0 !important;
+
     height: 100%;
+    border-radius: $container-radius;
 }
 
 .positivity-container{
@@ -90,23 +95,29 @@ html{
 .pop-account-list{
     margin: 0 !important;
     list-style: none !important;
-    &:first-child{
-        border-radius: $container-radius $container-radius 0 0;
-    }
+    margin: 0;
+    padding: 0;
 }
+
+.pop-account-item:first-child{
+    border-radius: $container-radius $container-radius 0 0;
+}
+
 hr{
     padding: 0 !important;
     margin: 0 !important;
 }
 
 .pop-account-item{
-    
     // display: inline-block;
     width: 100%;
     margin: 0;
     padding: 0;
     // background-color: rgba(200,100,200,0.5);
     list-style: none !important;
+    &:hover{
+        background-color: rgba($color: #000000, $alpha: 0.1);
+    }
 }
 
 .pop-account-link{
@@ -116,17 +127,10 @@ hr{
     margin: 0;
     width: 100%;
     height: 100%;
-    &:hover{
-        background-color: rgba($color: #000000, $alpha: 0.1);
-    }
+    
     // &:first{
     // }
 
-}
-
-ol{
-    margin: 0;
-    padding: 0;
 }
 
 .tweet-list{
