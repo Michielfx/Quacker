@@ -61,10 +61,8 @@ def tweet(ctx, e):
     elif sentiment == 'negative':
         ctx.n_sent += 1
 	#output data should be in following form: 
-	#{'norms':(pos, neg), 'tweets':[(timeN,sentimentN),...,(time2,sentiment2),(time1,sentiment1)]]
+	#{'norms':(pos, neg), 'tweets':[(time1,sentiment1), (time2,sentiment2), ..., (timeN,sentimenN)]]
 	#where pos and neg are the normalized positive and negative sentiment counters
-	#at every event the normalized values are stored in norms
-    ctx.sent_dict['norms'] = norm(ctx.p_sent,ctx.n_sent)
 	#at every every the time of the tweet and its sentiment are stored as a tuple in tweets
     ctx.sent_dict['tweets'].append((time,sentiment))
 	#at every incoming tweet (event), remove all tweets in the 'tweets' list in ctx.sent_dict
@@ -77,9 +75,15 @@ def tweet(ctx, e):
         elif oldest_tweet[1] == 'negative':
             ctx.n_sent -= 1
         ctx.sent_dict['tweets'] = ctx.sent_dict['tweets'][1:]
+    #at every event the normalized values are stored in norms
+    ctx.sent_dict['norms'] = norm(ctx.p_sent,ctx.n_sent)
     #printing the dict to show what the output data will look like, however only ctx.sent_dict['norms']
     #is needed for plotting the charts
-    print(ctx.sent_dict)
+    # emit to outside world
+    if len(ctx.sent_dict.get('tweets')) > 15:
+        emit('mood',{
+             'action': 'update',
+             'value': ctx.sent_dict.get('norms')})
 	#}GIEL
 
 
