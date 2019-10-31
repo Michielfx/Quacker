@@ -142,23 +142,33 @@ var process_entities = function(message, entities) {
 
 <!-- Tweets -->
 <script>
+    document.getElementById('tweet-input').addEventListener("keyup", function(e){
+        if(e.keyCode === 13){
+            sendTweet();
+        }
+    });
+
 
 function sendTweet(){
-    try{
-        tweet = new Object();
-        tweet.text = $('#tweet-input').val();
-        tweet.user = new Object();
-        tweet.user.name = "@sexyunicorn69";
-        tweet.user.screen_name = "You";
-        tweet.created_at = "Just now";
-        tweet.user.name = "You";
-        tweet.entities = null;
-        addTweet(tweet);
+    input = $('#tweet-input');
+    if(input.val() != null && input.val() != ""){
+        try{
+            tweet = new Object();
+            tweet.text = input.val();
+            tweet.user = new Object();
+            tweet.user.name = "@sexyunicorn69";
+            tweet.user.screen_name = "You";
+            tweet.created_at = "Just now";
+            tweet.user.name = "You";
+            tweet.entities = null;
+            addTweet(tweet);
 
-    }catch(Exception){
-        
+        }catch(Exception){
+            
+        }
+        input.val(null);
     }
-    $('#tweet-input').val(null);
+    
 }
 
 // create the necessary HTML in the block container
@@ -236,7 +246,7 @@ function addTweet(tweet){
                         borderColor: "rgba(200, 40, 40, 1)",
                         borderWidth: 1,
                         // data: [[0,0.2]]
-                        data: [-1]
+                        data: [0]
                         // barThickness: 6,
                         // maxBarThickness: 6
                     }
@@ -247,7 +257,7 @@ function addTweet(tweet){
                         borderColor: "rgba(40, 200, 40, 1)",
                         borderWidth: 1,
                         // data: [[0.2,0.8]]
-                        data: [1],
+                        data: [0],
                         barThickness: 6,
                         maxBarThickness: 6
                     }
@@ -276,7 +286,8 @@ function addTweet(tweet){
                             ticks:{
                                 suggestedMin: -1,
                                 suggestedMax: 1
-                            }
+                            },
+                            // stacked: true
                         }],
                         xAxes: [{
                             display: false,
@@ -296,6 +307,7 @@ function addTweet(tweet){
 
                 popChart.data.datasets[0].data[0] = -m.mood_value[0];
                 popChart.data.datasets[1].data[0] = m.mood_value[1];
+                // popChart.data.datasets[1].data[0] = 1;
 
 
                 // popChart.data.datasets[0].data[0][1] = m.mood_value[0];
