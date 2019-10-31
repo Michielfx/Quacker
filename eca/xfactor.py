@@ -45,7 +45,10 @@ def tweet(ctx, e):
 
     # ----------------------------
     # Noah is working on this
-    pop_at_acc(ctx, tweet)
+    emit('account', {
+        'action': 'update',
+        'value': pop_at_acc(ctx, tweet)})
+
     # ----------------------------
 
     # parse date
