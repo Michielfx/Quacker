@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="/style/theme.css"/>
 <link rel="stylesheet" href="/style/backoffice.min.css"/>
 <link rel="stylesheet" href="/style/sass/xfactor.css"/>
-
+<link rel="stylesheet" href="/style/animate.css"/>
+<link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script> -->
 <script src="/lib/Chart.bundle.min.js"></script>
 
@@ -17,7 +18,6 @@
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> Flot might not work with this version of jquery -->
 <script src="/lib/jquery-3.4.1.min.js"></script> <!--Flot might not work with this version of jquery-->
-
 
 <!-- <script src="/lib/jquery.flot.min.js"></script> -->
 <!-- <script src="/lib/core.js"></script> -->
@@ -29,10 +29,12 @@
 <body class="xdash">
 
     <div class="xfactor-header">
-        <h1>X</h1>
+        <img src="img/xfactorLogo.png" class="x-logo"/>
     </div>
 
     <div class="pop-account-container">
+        <p class="widget-header">Top mentioned accounts</h3>
+        <hr/>
         <ol class="pop-account-list" id="pop-account-list"></ol>
     </div>
 
@@ -42,7 +44,10 @@
 
             </ol>
         </div>        
-        <input class="tweet-input" placeholder="  Tweet!" type="text"/>
+        <div class="tweet-flex">
+            <input id="tweet-input" class="tweet-input" placeholder="Tweet!" type="text"/>
+            <button class="tweet-button btn btn-danger" onclick="sendTweet()" type="button">Tweet</button>
+        </div>
     </div>
         
     <div class="positivity-container">
@@ -50,6 +55,8 @@
     </div>
 
     <div class="pop-country-container">
+        <p class="widget-header">Popular countries</h3>
+        <hr/>
         <ol id="pop-country-list" class="pop-account-list"></ol>
     </div>
         
@@ -80,7 +87,7 @@ var entity_formatters = {
 // processes entities for the given message and entity object
 var process_entities = function(message, entities) {
     // short-circuit failure mode
-    if(typeof entities === 'undefined') {
+    if(typeof entities === 'undefined' || entities == null) {
         return message;
     }
 
@@ -128,24 +135,31 @@ var process_entities = function(message, entities) {
 <!-- Tweets -->
 <script>
 
+function sendTweet(){
+    try{
+        tweet = new Object();
+        tweet.text = $('#tweet-input').val();
+        tweet.user = new Object();
+        tweet.user.name = "@sexyunicorn69";
+        tweet.user.screen_name = "You";
+        tweet.created_at = "Just now";
+        tweet.user.name = "You";
+        tweet.entities = null;
+        addTweet(tweet);
+
+    }catch(Exception){
+        
+    }
+    $('#tweet-input').val(null);
+}
+
 // create the necessary HTML in the block container
 // $('#tweets').append('<ol id="tweetlist" class="tweet-list stream-items"></ol>');
-
-    var e = new EventSource('/events');
-    e.addEventListener('tweets', function(m) {
-        // console.exception("Received malformed message: ");
-
-            try {
-                var tweet = JSON.parse(m.data);
-            } catch(err) {
-                console.exception("Received malformed message: ", err);
-                return;
-            }
-
-            var $account = $('<a class="account-group"></a>');
+function addTweet(tweet){
+    var $account = $('<a class="account-group"></a>');
             $account.attr("href", "http://twitter.com/" + tweet.user.screen_name);
 
-            var $avatar = $("<img>").addClass("avatar");
+            var $avatar = $("<div class=\"avatar\"></div>");
             // $avatar.attr("src", tweet.user.profile_image_url);
             $account.append($avatar);
             $account.append($('<strong class="fullname">' + tweet.user.name + '</strong>'));
@@ -160,7 +174,7 @@ var process_entities = function(message, entities) {
             var $text = $('<p class="tweet-text">' + text + '</p>');
 
             var item = `
-            <li class="stream-item">
+            <li class="stream-item ">
                 <div class="tweet">
                     <div class="content">
                         <div class="stream-item-header">
@@ -180,6 +194,20 @@ var process_entities = function(message, entities) {
             if (list.children().length > 20) {
                 list.children().last().remove();
             }
+}
+
+    var e = new EventSource('/events');
+    e.addEventListener('tweets', function(m) {
+        // console.exception("Received malformed message: ");
+
+            try {
+                var tweet = JSON.parse(m.data);
+            } catch(err) {
+                console.exception("Received malformed message: ", err);
+                return;
+            }
+            addTweet(tweet)
+            
         });
     
 </script>
@@ -190,7 +218,7 @@ var process_entities = function(message, entities) {
         var fill = ctx.createPattern
         $(document).ready(function (){
             var popData = {
-                labels: ["Positivity"],
+                labels: ["Viewer Mood"],
 
                 datasets: [
                     {
@@ -198,7 +226,8 @@ var process_entities = function(message, entities) {
                         backgroundColor: "rgba(200, 40, 40, 0.5)",
                         borderColor: "rgba(200, 40, 40, 1)",
                         borderWidth: 1,
-                        data: [-0.2]
+                        // data: [[0,0.2]]
+                        data: [0]
                         // barThickness: 6,
                         // maxBarThickness: 6
                     }
@@ -208,7 +237,8 @@ var process_entities = function(message, entities) {
                         backgroundColor: "rgba(40, 200, 40, 0.5)",
                         borderColor: "rgba(40, 200, 40, 1)",
                         borderWidth: 1,
-                        data: [0.8]
+                        // data: [[0.2,0.8]]
+                        data: [0]
                         // barThickness: 6,
                         // maxBarThickness: 6
                     }
@@ -255,6 +285,11 @@ var process_entities = function(message, entities) {
 
                 popChart.data.datasets[0].data[0] = -m.mood_value[0];
                 popChart.data.datasets[1].data[0] = m.mood_value[1];
+
+
+                // popChart.data.datasets[0].data[0][1] = m.mood_value[0];
+                // popChart.data.datasets[1].data[0][1] = m.mood_value[1];
+                // popChart.data.datasets[1].data[0][0] = m.mood_value[0];
                 popChart.update();
             });
         });

@@ -4,7 +4,8 @@ $foreground-color: #f5f8fa;
 // $background-color: #f5f8fa;
 // $foreground-color: rgba(255, 255, 255, 1);
 $container-radius: 2rem;
-$accent: #1b95e0;
+$accent: #eb4545;
+// $accent: #1b95e0;
 
 html{
     background-color: $background-color;
@@ -29,8 +30,84 @@ html{
 }
 
 .xfactor-header{
-    // display: flexbox;
+    display: flexbox;
     grid-area: header;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.widget-header{
+    font-size: 1.35em;
+    // text-align: center;
+    // font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    // font-family: 'Quicksand', sans-serif !important;
+    color: rgba($color: #383838, $alpha: 1.0);
+    font-weight: 650;
+    padding: 0.4rem 1rem 0.4rem 1rem;
+    margin: 0;
+}
+hr{
+    margin: 0;
+}
+
+.x-logo{
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    object-position: center;
+    object-fit: scale-down;
+    align-self: center;
+    justify-self: center;
+}
+
+.tweet-flex{
+    display: flexbox;
+    align-content: end;
+    align-items: stretch;
+    justify-content: end;
+    justify-items: stretch;
+    flex-direction: row;
+    width: 100%;
+    padding: 0 0 0.8rem 0;
+}
+
+.tweet-button{
+    border-radius: 5rem;
+    flex-shrink: 1;
+    height: 100%;
+    width: 13%;
+    background-color: $accent;
+    border-color: rgba($color: rgb(255, 72, 72), $alpha: 1.0);
+    align-self: flex-start;
+    color: white;
+    font-weight: 800;
+}
+
+.avatar{
+    border-radius: 10rem !important;
+    background-color: rgba($color: #1a84db, $alpha: 1.0);
+
+    
+}
+// .avatar:nth-child(3n + 2){
+//         background-color: rgba($color: #0f64aa, $alpha: 1.0);
+//     }
+//     .avatar:nth-child(4n + 3){
+//         background-color: rgba($color: #297cac, $alpha: 1.0);
+//     }
+
+.tweet-input{
+    // flex-basis: 4;
+    width: 85%;
+    border-radius: 2rem;
+    border-color: $accent !important;
+    border-style: solid !important;
+    height: 100%;
+    padding: 0 1rem 0 1rem;
+    // border:  0.1rem  #3344EE !important;
 }
 
 .pop-country-container{
@@ -52,8 +129,6 @@ html{
     padding: 0 1rem 0 1rem;
 }
 
-
-
 .left-container{
     grid-area: tweets;
     display: flex;
@@ -63,13 +138,6 @@ html{
     width: 100%; 
     max-width: 100%;
     overflow: hidden;   
-}
-
-.tweet-input{
-    border-radius: 2rem;
-    border-color: $accent !important;
-    border-style: solid !important;
-    // border:  0.1rem  #3344EE !important;
 }
 
 .tweet-list-container{
@@ -91,6 +159,7 @@ html{
 
     height: 100%;
     border-radius: $container-radius;
+    overflow-y: hidden;
 }
 .pop-account-list{
     margin: 0 !important;
@@ -99,9 +168,9 @@ html{
     padding: 0;
 }
 
-.pop-account-item:first-child{
-    border-radius: $container-radius $container-radius 0 0;
-}
+// .pop-account-item:last-child{
+//     border-radius: 0 0 $container-radius $container-radius;
+// }
 
 hr{
     padding: 0 !important;
@@ -123,11 +192,11 @@ hr{
 .pop-account-link{
     // padding: 0 0.3rem 0 0.3rem;
     display: inline-block;
-    padding: 1rem 1rem 1rem 1rem;    
+    padding: 0.95rem 1rem 0.95rem 1rem;    
     margin: 0;
     width: 100%;
     height: 100%;
-    
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     // &:first{
     // }
 
@@ -146,7 +215,9 @@ hr{
     width: 100%;
 
     .stream-item{
+        transition: all ease-in-out 0.3s;
         // background-color: white;
+        animation-duration: 0.1s;
         border-radius: 1rem !important;
         border: none !important;
         margin-top: 0.4rem;
