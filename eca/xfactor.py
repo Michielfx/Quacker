@@ -9,6 +9,7 @@ import textwrap
 from popularity_account_noah import *
 from collections import *
 from textblob import TextBlob
+import operator
 
 
 ## You might have to update the root path to point to the correct path
@@ -31,6 +32,8 @@ def setup(ctx, e):
     ctx.p_sent = 0
     ctx.n_sent = 0
     ctx.sent_dict = defaultdict(list)
+    ctx.ctry_dict = {}
+    ctx.ctry_tweet_list = []
 
     start_offline_tweets('data/xfactor.txt', 'tweets', time_factor=1000)
 
@@ -50,8 +53,9 @@ def tweet(ctx, e):
 
     # nicify text
     text = textwrap.fill(tweet['text'],initial_indent='    ', subsequent_indent='    ')
-
+    
     #GIEL{
+    #MOOD
     #uses a python extension to determine the sentiment of a text
 	#see from textblob import TextBlob, and pip install textblob
     sentiment = get_tweet_sentiment(text)
@@ -77,15 +81,37 @@ def tweet(ctx, e):
         ctx.sent_dict['tweets'] = ctx.sent_dict['tweets'][1:]
     #at every event the normalized values are stored in norms
     ctx.sent_dict['norms'] = norm(ctx.p_sent,ctx.n_sent)
-    #printing the dict to show what the output data will look like, however only ctx.sent_dict['norms']
-    #is needed for plotting the charts
     # emit to outside world
     if len(ctx.sent_dict.get('tweets')) > 15:
         emit('mood',{
-             'action': 'update',
-             'value': ctx.sent_dict.get('norms')})
-	#}GIEL
+             'mood_value': ctx.sent_dict.get('norms')})
 
+    #PBC (popularity by country)
+    #defining current country
+    cur_country = tweet.get('place').get('country')
+    #if current current not yet in country dictionary, give it value 1
+    if cur_country not in ctx.ctry_dict:
+        ctx.ctry_dict[cur_country] = 1
+    #otherwise increase the value of the country by 1
+    else:
+    	ctx.ctry_dict[cur_country] += 1
+    #appending time and current country as a tuple to the list
+    ctx.ctry_tweet_list.append((time,cur_country))
+    #whenever a tweet in the ctx.ctry_tweet_list is more than a month old 
+    #the (time, country) tuple is removed and the counter for that country in the ctx.ctry_dict is decreased by 1
+    while (time-ctx.ctry_tweet_list[0][0]).total_seconds() > (30*24*60*60):
+        oldest_country= ctx.ctry_tweet_list[0][1]
+        ctx.ctry_dict[oldest_country] -= 1
+        ctx.ctry_tweet_list = ctx.ctry_tweet_list[1:]
+    #creating a list for the 5 most popular country, sorted by the counntry counter in the dict
+    sorted_dict = sorted(ctx.ctry_dict.items(), key=operator.itemgetter(1))[::-1][:5]
+    #top5 countries of the the sorted_dict
+    top5 = [tup[0] for tup in sorted_dict]
+    #emiting a list of up to 5 countries order in popularity from left to right
+    emit('ctry_pop',{
+         'ctry_value': top5})
+	#}GIEL
+    
 
     # generate output
     # output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
