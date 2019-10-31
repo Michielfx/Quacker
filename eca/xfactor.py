@@ -24,8 +24,8 @@ def setup(ctx, e):
     ctx.count = 0
 
     # Noah Values:
-    ctx.pop_dic = {}
-    ctx.pop_rem = []
+    ctx.pop_dic = {}  # Keeps track of how often each account is mentioned
+    ctx.pop_rem = []  # Keeps track of account values that need to be decremented
     # ----------------------------
 
     #Giel Values:
