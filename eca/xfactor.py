@@ -118,8 +118,19 @@ def tweet(ctx, e):
 
     # generate output
     # output = "[{}] {} (@{}):\n{}".format(time, tweet['user']['name'], tweet['user']['screen_name'], text)
-    if predict_prob([tweet['text']]) < 0.6 and detect(tweet['text']) == 'en':
-        emit('tweets', tweet)
+    if predict_prob([tweet['text']]) < 0.6:
+        isProfane = False
+    else:
+        isProfane = True
+
+    if detect(tweet['text']) == 'en':
+        isEnglish = True
+    else:
+        isEnglish = False
+
+    tweet['isProfane'] = isProfane
+    tweet['isEnglish'] = isEnglish
+    emit('tweets', tweet)
 
 #GIEL{
 #normalizing function for positive and negative counters
