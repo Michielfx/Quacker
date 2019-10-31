@@ -19,35 +19,40 @@
 <script src="/lib/jquery-3.4.1.min.js"></script> <!--Flot might not work with this version of jquery-->
 
 
-<script src="/lib/jquery.flot.min.js"></script>
-<script src="/lib/core.js"></script>
-<script src="/lib/charts.js"></script>
-<script src="/lib/log.js"></script>
-<script src="/lib/tweets.js"></script>
+<!-- <script src="/lib/jquery.flot.min.js"></script> -->
+<!-- <script src="/lib/core.js"></script> -->
+<!-- <script src="/lib/charts.js"></script> -->
+<!-- <script src="/lib/log.js"></script> -->
+<!-- <script src="/lib/tweets.js"></script> -->
 
 </head>
 <body class="xdash">
-    <div class="xheader">
-        <h1>XFactor Thingy</h1>
+
+    <div class="xfactor-header">
+        <h1>X</h1>
     </div>
 
-<div class="left-container">
-    <div class="tweet-list-container">
-        <ol id="tweetlist" class="tweet-list">
+    <div class="pop-account-container">
+        <ol id="pop-account-list"></ol>
+    </div>
 
-        </ol>
-    </div>        
-    <input class="tweet-input" placeholder="  Tweet!" type="text"/>
-</div>
-    
-<div class="positivity-container">
-    <canvas class="positivity-canvas" height="100%" width="100%" id="posCanvas"></canvas>
-</div>
+    <div class="left-container">
+        <div class="tweet-list-container">
+            <ol id="tweetlist" class="tweet-list">
 
-<div class="pop-country-container">
+            </ol>
+        </div>        
+        <input class="tweet-input" placeholder="  Tweet!" type="text"/>
+    </div>
         
-</div>
-    
+    <div class="positivity-container">
+        <canvas class="positivity-canvas" height="100%" width="100%" id="posCanvas"></canvas>
+    </div>
+
+    <div class="pop-country-container">
+            
+    </div>
+        
 <!-- Popularity Chart -->
 
 
@@ -193,7 +198,7 @@ var process_entities = function(message, entities) {
                         backgroundColor: "rgba(200, 40, 40, 0.5)",
                         borderColor: "rgba(200, 40, 40, 1)",
                         borderWidth: 1,
-                        data: [-0.4]
+                        data: [0]
                     }
                     ,
                     {
@@ -201,7 +206,7 @@ var process_entities = function(message, entities) {
                         backgroundColor: "rgba(40, 200, 40, 0.5)",
                         borderColor: "rgba(40, 200, 40, 1)",
                         borderWidth: 1,
-                        data: [0.6]
+                        data: [0]
                     }
                 ]
             }
@@ -221,10 +226,14 @@ var process_entities = function(message, entities) {
                     },
                     scales: {
                         yAxes: [{
+                            display: false,
                             ticks:{
                                 suggestedMin: -1,
                                 suggestedMax: 1
                             }
+                        }],
+                        xAxes: [{
+                            display: false
                         }]
                     }
                 }
@@ -238,13 +247,41 @@ var process_entities = function(message, entities) {
                     return;
                 }
 
-                // popChart.data.datasets[0].data[0] = 0.1;
+                popChart.data.datasets[0].data[0] = -m.mood_value[0];
+                popChart.data.datasets[1].data[0] = m.mood_value[1];
                 popChart.update();
             });
         });
         
         
     
+    </script>
+
+
+<!-- Tweets -->
+<script>
+
+    // create the necessary HTML in the block container
+    // $('#tweets').append('<ol id="tweetlist" class="tweet-list stream-items"></ol>');
+    
+        // var e = new EventSource('/events');
+        e.addEventListener('account', function(d) {
+            try {
+                    var m = JSON.parse(d.data);
+                } catch(err) {
+                    console.exception("Received malformed message: ", err);
+                    return;
+            }
+
+
+            var listEl = $('#pop-account-list');
+            listEl.empty();
+            m.value.forEach((account) => {
+                listEl.append(`<li class="pop-account-item"><a class="pop-account-link" href="https://twitter.com/${account[0]}">${account[0]}</a></li>`);
+            });
+            
+        });
+        
     </script>
 
 </body>

@@ -1,33 +1,58 @@
+$background-color: white;
+$foreground-color: #f5f8fa;
+
+// $background-color: #f5f8fa;
+// $foreground-color: rgba(255, 255, 255, 1);
+$container-radius: 2rem;
+$accent: #1b95e0;
+
+html{
+    background-color: $background-color;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
 .xdash{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 50px 1fr 1fr;
-    grid-template-areas: "header header header"
-                         "tweets a b"
-                         "tweets positivity c";
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "header tweets mood"
+                         "popaccount tweets popcountry"
+                         "popaccount tweets popcountry";
     height: 100vh;
     max-height: 100vh;
-    margin: 0;
-    padding: 0.2rem 1rem 1rem 1rem;
+    margin: 0 10rem 0 10rem;
+    padding: 2.2rem 1rem 2.2rem 1rem;
     gap:1rem;
 }
 
-.xheader{
+.xfactor-header{
+    // display: flexbox;
     grid-area: header;
 }
-// .xheader{
-//     grid-area: header;
-// }
 
 .pop-country-container{
-    grid-area: a;
+    grid-area: popcountry;
     width: 100%;
     height: 100%;
 }
 
 .positivity-container{
-    grid-area: positivity;
+    grid-area: mood;
+    background-color: $foreground-color;
     height: 100%;
+    border-radius: $container-radius;
+    padding: 0 1rem 0 1rem;
+}
+
+.pop-account-container{
+    grid-area: popaccount;
+    background-color: $foreground-color;
+    width: 100%;
+    height: 100%;
+    border-radius: $container-radius;
 }
 
 .left-container{
@@ -43,7 +68,7 @@
 
 .tweet-input{
     border-radius: 2rem;
-    border-color: #1b95e0 !important;
+    border-color: $accent !important;
     border-style: solid !important;
     // border:  0.1rem  #3344EE !important;
 }
@@ -57,15 +82,30 @@
     
 }
 
+
+.pop-account-item{
+    margin-bottom: 1rem;
+    list-style: none;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(200,200,200,0.5);
+}
+
 .tweet-list{
-    border-radius: 0.8rem;
+    border-radius: $container-radius;
     list-style: none;
     display: inline-block;
     margin: 0;
     padding: 0;
     width: 100%;
+    background-color: $foreground-color;
+    padding: 0.5rem;
+    height: 100%;
+    width: 100%;
 
     .stream-item{
+        // background-color: white;
         border-radius: 1rem !important;
         border: none !important;
         margin-top: 0.4rem;
