@@ -1,4 +1,5 @@
 import datetime
+import operator
 
 
 def pop_at_acc(ctx, tweet):
@@ -13,16 +14,16 @@ def pop_at_acc(ctx, tweet):
 
         ctx.pop_rem.append([mention["screen_name"], time])
 
-    l = []
+    #print(ctx.pop_rem)
     for i, old_tweet in enumerate(ctx.pop_rem):
         diff = time - old_tweet[1]
         if diff.days > 0:
-            l.append(i)
             ctx.pop_dic[old_tweet[0]] -= 1
+            ctx.pop_rem = ctx.pop_rem[1:]
+        else:
+            break
 
-    for i in l:
-        del ctx.pop_rem[i]
-
-    #print(ctx.pop_dic)
+    sort = sorted(ctx.pop_dic.items(), key=operator.itemgetter(1), reverse=True)
+    return sort
 
 
