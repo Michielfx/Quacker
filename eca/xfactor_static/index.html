@@ -198,7 +198,9 @@ var process_entities = function(message, entities) {
                         backgroundColor: "rgba(200, 40, 40, 0.5)",
                         borderColor: "rgba(200, 40, 40, 1)",
                         borderWidth: 1,
-                        data: [0]
+                        data: [-0.2]
+                        // barThickness: 6,
+                        // maxBarThickness: 6
                     }
                     ,
                     {
@@ -206,7 +208,9 @@ var process_entities = function(message, entities) {
                         backgroundColor: "rgba(40, 200, 40, 0.5)",
                         borderColor: "rgba(40, 200, 40, 1)",
                         borderWidth: 1,
-                        data: [0]
+                        data: [0.8]
+                        // barThickness: 6,
+                        // maxBarThickness: 6
                     }
                 ]
             }
@@ -218,6 +222,7 @@ var process_entities = function(message, entities) {
                     responsive: true,
                     maintainAspectRatio: false,
                     legend: {
+                        display: false,
                         position: 'top'
                     },
                     title: {
@@ -233,7 +238,8 @@ var process_entities = function(message, entities) {
                             }
                         }],
                         xAxes: [{
-                            display: false
+                            display: false,
+                            stacked: true
                         }]
                     }
                 }
@@ -274,12 +280,22 @@ var process_entities = function(message, entities) {
             }
 
 
+            // var listEl = $('#pop-account-list');
+            // listEl.empty();
+            // m.value.forEach((account) => {
+            //     listEl.append(`<li class="pop-account-item"><a class="pop-account-link" href="https://twitter.com/${account[0]}">${account[0]}</a></li>`);
+            //     listEl.append('<hr/>');
+            // });
+            
             var listEl = $('#pop-account-list');
             listEl.empty();
-            m.value.forEach((account) => {
-                listEl.append(`<li class="pop-account-item"><a class="pop-account-link" href="https://twitter.com/${account[0]}">${account[0]}</a></li>`);
-            });
-            
+            for (let index = 0; index < m.value.length; index++) {
+                listEl.append(`<li class="pop-account-item"><a class="pop-account-link" href="https://twitter.com/${m.value[index][0]}">${index + 1}. ${m.value[index][0]}</a></li>`);
+                if(index != m.value.length - 1){
+                    listEl.append('<hr/>');
+                }
+            }
+
         });
         
     </script>

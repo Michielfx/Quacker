@@ -46,17 +46,6 @@ html {
   padding: 0 1rem 0 1rem;
 }
 
-.pop-account-container {
-  -ms-grid-row: 2;
-  -ms-grid-row-span: 2;
-  -ms-grid-column: 1;
-  grid-area: popaccount;
-  background-color: #f5f8fa;
-  width: 100%;
-  height: 100%;
-  border-radius: 2rem;
-}
-
 .left-container {
   -ms-grid-row: 1;
   -ms-grid-row-span: 3;
@@ -90,13 +79,53 @@ html {
   overflow-y: scroll;
 }
 
-.pop-account-item {
-  margin-bottom: 1rem;
-  list-style: none;
-  max-height: 100%;
-  height: 100%;
+.pop-account-container {
+  -ms-grid-row: 2;
+  -ms-grid-row-span: 2;
+  -ms-grid-column: 1;
+  grid-area: popaccount;
+  background-color: #f5f8fa;
   width: 100%;
-  background-color: rgba(200, 200, 200, 0.5);
+  height: 100%;
+  border-radius: 2rem;
+}
+
+.pop-account-list {
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+.pop-account-list:first-child {
+  border-radius: 2rem 2rem 0 0;
+}
+
+hr {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.pop-account-item {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none !important;
+}
+
+.pop-account-link {
+  display: inline-block;
+  padding: 1rem 1rem 1rem 1rem;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pop-account-link:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+ol {
+  margin: 0;
+  padding: 0;
 }
 
 .tweet-list {

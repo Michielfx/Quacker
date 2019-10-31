@@ -47,13 +47,7 @@ html{
     padding: 0 1rem 0 1rem;
 }
 
-.pop-account-container{
-    grid-area: popaccount;
-    background-color: $foreground-color;
-    width: 100%;
-    height: 100%;
-    border-radius: $container-radius;
-}
+
 
 .left-container{
     grid-area: tweets;
@@ -82,14 +76,57 @@ html{
     
 }
 
+//Popularity
+.pop-account-container{
+    grid-area: popaccount;
+    background-color: $foreground-color;
+    width: 100%;
+    // padding: 0;
+    // padding: 1rem 0 1rem 0 !important;
+
+    height: 100%;
+    border-radius: $container-radius;
+}
+.pop-account-list{
+    margin: 0 !important;
+    list-style: none !important;
+    &:first-child{
+        border-radius: $container-radius $container-radius 0 0;
+    }
+}
+hr{
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
 .pop-account-item{
-    margin-bottom: 1rem;
-    list-style: none;
-    max-height: 100%;
-    height: 100%;
+    
+    // display: inline-block;
     width: 100%;
-    background-color: rgba(200,200,200,0.5);
+    margin: 0;
+    padding: 0;
+    // background-color: rgba(200,100,200,0.5);
+    list-style: none !important;
+}
+
+.pop-account-link{
+    // padding: 0 0.3rem 0 0.3rem;
+    display: inline-block;
+    padding: 1rem 1rem 1rem 1rem;    
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    &:hover{
+        background-color: rgba($color: #000000, $alpha: 0.1);
+    }
+    // &:first{
+    // }
+
+}
+
+ol{
+    margin: 0;
+    padding: 0;
 }
 
 .tweet-list{
