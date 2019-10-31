@@ -24,6 +24,6 @@ def pop_at_acc(ctx, tweet):
             break
 
     sort = sorted(ctx.pop_dic.items(), key=operator.itemgetter(1), reverse=True)
-    return sort[:9]
+    return sort[:10]
 
 
