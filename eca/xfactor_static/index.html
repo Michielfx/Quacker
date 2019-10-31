@@ -33,7 +33,7 @@
     </div>
 
     <div class="pop-account-container">
-        <ol id="pop-account-list"></ol>
+        <ol class="pop-account-list" id="pop-account-list"></ol>
     </div>
 
     <div class="left-container">
@@ -50,7 +50,7 @@
     </div>
 
     <div class="pop-country-container">
-            
+        <ol id="pop-country-list" class="pop-account-list"></ol>
     </div>
         
 <!-- Popularity Chart -->
@@ -279,19 +279,30 @@ var process_entities = function(message, entities) {
                     return;
             }
 
-
-            // var listEl = $('#pop-account-list');
-            // listEl.empty();
-            // m.value.forEach((account) => {
-            //     listEl.append(`<li class="pop-account-item"><a class="pop-account-link" href="https://twitter.com/${account[0]}">${account[0]}</a></li>`);
-            //     listEl.append('<hr/>');
-            // });
-            
             var listEl = $('#pop-account-list');
             listEl.empty();
             for (let index = 0; index < m.value.length; index++) {
                 listEl.append(`<li class="pop-account-item"><a class="pop-account-link" href="https://twitter.com/${m.value[index][0]}">${index + 1}. ${m.value[index][0]}</a></li>`);
                 if(index != m.value.length - 1){
+                    listEl.append('<hr/>');
+                }
+            }
+
+        });
+
+        e.addEventListener('ctry_pop', function(d) {
+            try {
+                    var m = JSON.parse(d.data);
+                } catch(err) {
+                    console.exception("Received malformed message: ", err);
+                    return;
+            }
+
+            var listEl = $('#pop-country-list');
+            listEl.empty();
+            for (let index = 0; index < m.ctry_value.length; index++) {
+                listEl.append(`<li class="pop-account-item"><p class="pop-account-link">${index + 1}. ${m.ctry_value[index]}</p></li>`);
+                if(index != m.ctry_value.length - 1){
                     listEl.append('<hr/>');
                 }
             }
