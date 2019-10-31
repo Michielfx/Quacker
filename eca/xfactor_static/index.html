@@ -33,7 +33,7 @@
     </div>
 
     <div class="pop-account-container">
-        <p class="widget-header">Top mentioned accounts</h3>
+        <p class="widget-header">Top mentioned accounts</p>
         <hr/>
         <ol class="pop-account-list" id="pop-account-list"></ol>
     </div>
@@ -51,11 +51,19 @@
     </div>
         
     <div class="positivity-container">
-        <canvas class="positivity-canvas" height="100%" width="100%" id="posCanvas"></canvas>
+        <p class="widget-header mood-header">Recent mood</p>
+        <hr/>
+        <div class="another-mood-container">
+            <div class="positivity-canvas">
+                <canvas height="100%" width="100%" id="posCanvas"></canvas>
+            </div>
+        </div>
+        
+        
     </div>
 
     <div class="pop-country-container">
-        <p class="widget-header">Popular countries</h3>
+        <p class="widget-header">Popular countries</p>
         <hr/>
         <ol id="pop-country-list" class="pop-account-list"></ol>
     </div>
@@ -219,7 +227,8 @@ function addTweet(tweet){
         $(document).ready(function (){
             var popData = {
                 labels: ["Viewer Mood"],
-
+                barThickness: 6,
+                maxBarThickness: 6,
                 datasets: [
                     {
                         label: "Negative",
@@ -227,7 +236,7 @@ function addTweet(tweet){
                         borderColor: "rgba(200, 40, 40, 1)",
                         borderWidth: 1,
                         // data: [[0,0.2]]
-                        data: [0]
+                        data: [-1]
                         // barThickness: 6,
                         // maxBarThickness: 6
                     }
@@ -238,9 +247,9 @@ function addTweet(tweet){
                         borderColor: "rgba(40, 200, 40, 1)",
                         borderWidth: 1,
                         // data: [[0.2,0.8]]
-                        data: [0]
-                        // barThickness: 6,
-                        // maxBarThickness: 6
+                        data: [1],
+                        barThickness: 6,
+                        maxBarThickness: 6
                     }
                 ]
             }
@@ -249,6 +258,8 @@ function addTweet(tweet){
                 type: 'bar',
                 data: popData,
                 options: {
+                    barThickness: 6,
+                    maxBarThickness: 6,
                     responsive: true,
                     maintainAspectRatio: false,
                     legend: {
