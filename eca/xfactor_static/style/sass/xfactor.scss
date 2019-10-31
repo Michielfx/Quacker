@@ -179,8 +179,44 @@ hr{
     max-height: 100%;
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    border-radius: $container-radius;
+    background-color: $foreground-color;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
+
+.tweet-scroll{
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+.tweet-list{
+    list-style: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    padding: 0.5rem 0.5rem 2rem 0.5rem;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+
+    .stream-item{
+        transition: all ease-in-out 0.3s;
+        // background-color: white;
+        animation-duration: 0.1s;
+        border-radius: 1rem !important;
+        border: none !important;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
+    }
+}
+
 
 //Popularity
 .pop-account-container{
@@ -235,25 +271,3 @@ hr{
 
 }
 
-.tweet-list{
-    border-radius: $container-radius;
-    list-style: none;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    background-color: $foreground-color;
-    padding: 0.5rem;
-    height: 100%;
-    width: 100%;
-
-    .stream-item{
-        transition: all ease-in-out 0.3s;
-        // background-color: white;
-        animation-duration: 0.1s;
-        border-radius: 1rem !important;
-        border: none !important;
-        margin-top: 0.4rem;
-        margin-bottom: 0.4rem;
-    }
-}
