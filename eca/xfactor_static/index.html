@@ -19,6 +19,7 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> Flot might not work with this version of jquery -->
 <script src="/lib/jquery-3.4.1.min.js"></script> <!--Flot might not work with this version of jquery-->
 
+<!-- Me no like these -->
 <!-- <script src="/lib/jquery.flot.min.js"></script> -->
 <!-- <script src="/lib/core.js"></script> -->
 <!-- <script src="/lib/charts.js"></script> -->
@@ -28,21 +29,55 @@
 </head>
 <body class="xdash">
 
+    <!-- Logo -->
     <div class="xfactor-header">
         <img src="img/xfactorLogo.png" class="x-logo"/>
     </div>
 
+    <!-- Account Popularity -->
     <div class="pop-account-container">
-        <p class="widget-header">Top mentioned accounts</p>
+        <p class="widget-header">Top Mentioned Accounts</p>
         <hr/>
         <ol class="pop-account-list" id="pop-account-list"></ol>
     </div>
 
+    <!--Live Feed-->
     <div class="left-container">
         
         <div class="tweet-list-container">
-            <p class="widget-header">Live feed</p>
+
+            <!-- Header with options -->
+            <div class="tweet-widget-header">
+                <p class="widget-header">Live Feed</p>
+                <div class="tweet-options-container">
+
+                    <div class="tweet-options-inner">
+                        <!-- <div class="tweet-options-evenmore"> -->
+                            <!-- English Only -->
+                            <small>English Only: 
+                                <label class="switch">
+                                    <input id="englishOnly" checked type="checkbox"/>
+                                    <span class="slider"></span>
+                                </label>
+                            </small>
+                            
+
+                            <!-- Profanity Filter -->
+                            <small>Allow Profanity: 
+                                    <label class="switch">
+                                        <input id="allowProfane" type="checkbox"/>
+                                        <span class="slider"></span>
+                                    </label>
+                            </small>
+                        <!-- </div> -->
+                        
+                    </div>
+                    
+                    <a class="tweet-options" onclick="toggleOpts()">Options</a>
+                </div>
+            </div>
             <hr/>
+            <!-- Actual feed -->
             <div class="tweet-scroll">
                 <ol id="tweetlist" class="tweet-list">
             
@@ -50,33 +85,31 @@
             </div>
             
         </div>        
+        <!-- Input -->
         <div class="tweet-flex">
             <input id="tweet-input" class="tweet-input" placeholder="Tweet!" type="text"/>
             <button class="tweet-button btn btn-danger" onclick="sendTweet()" type="button">Tweet</button>
         </div>
     </div>
         
+    <!-- Mood Chart -->
     <div class="positivity-container">
-        <p class="widget-header mood-header">Recent mood</p>
+        <p class="widget-header mood-header">Recent Mood</p>
         <hr/>
         <div class="another-mood-container">
             <div class="positivity-canvas">
                 <canvas height="100%" width="100%" id="posCanvas"></canvas>
             </div>
         </div>
-        
-        
     </div>
 
+    <!-- Country popularity -->
     <div class="pop-country-container">
-        <p class="widget-header">Popular countries</p>
+        <p class="widget-header">Popular Countries</p>
         <hr/>
         <ol id="pop-country-list" class="pop-account-list"></ol>
     </div>
         
-<!-- Popularity Chart -->
-
-
 <!-- Uni Tweet Formatters -->
 <script>
 // Entity formatters for use by tweet list
@@ -148,13 +181,18 @@ var process_entities = function(message, entities) {
 
 <!-- Tweets -->
 <script>
+    function toggleOpts(){
+        $('.tweet-options-inner').toggleClass('show-opts');
+    }
+
+    //Add an event handler to send a tweet when Enter/Return is pressed on the Tweet Input
     document.getElementById('tweet-input').addEventListener("keyup", function(e){
         if(e.keyCode === 13){
             sendTweet();
         }
     });
 
-
+//Function for sending tweets to the feed
 function sendTweet(){
     input = $('#tweet-input');
     if(input.val() != null && input.val() != ""){
@@ -177,8 +215,7 @@ function sendTweet(){
     
 }
 
-// create the necessary HTML in the block container
-// $('#tweets').append('<ol id="tweetlist" class="tweet-list stream-items"></ol>');
+//Tweet Builder & Pusher
 function addTweet(tweet){
     var $account = $('<a class="account-group"></a>');
             $account.attr("href", "http://twitter.com/" + tweet.user.screen_name);
@@ -193,10 +230,11 @@ function addTweet(tweet){
             var $time = $('<small class="time"></small>');
             $time.append($('<span>' + tweet.created_at + '</span>'));
 
-            // Build contents:
+            // Build contents
             var text = process_entities(tweet.text, tweet.entities);
             var $text = $('<p class="tweet-text">' + text + '</p>');
 
+            //Template
             var item = `
             <li class="stream-item ">
                 <div class="tweet">
@@ -211,32 +249,52 @@ function addTweet(tweet){
             </li>`;
 
             var list = $('#tweetlist');
-            // place new tweet in front of list 
+            
+            //Show the tweet
             list.prepend(item);
 
-            // remove stale tweets
+            //Remove old tweets from the list
             if (list.children().length > 20) {
                 list.children().last().remove();
             }
 }
 
-    var e = new EventSource('/events');
+    var e = new EventSource('/events'); //Listen to the event source stream from ECA
+    //Show a newly received tweet in the 'live' feed
     e.addEventListener('tweets', function(m) {
-        // console.exception("Received malformed message: ");
-
             try {
                 var tweet = JSON.parse(m.data);
             } catch(err) {
                 console.exception("Received malformed message: ", err);
                 return;
             }
+            allowProfane = false;
+            if($("#allowProfane").is(":checked")){
+                allowProfane = true;
+            }
+            englishOnly = false
+            if($("#englishOnly").is(":checked")){
+                englishOnly = true;
+            }
+            console.log("New Tweet");
+            console.log("Is Profane " + tweet.isProfane);
+            if(!allowProfane && tweet.isProfane){
+                console.log("Return (Profane)");
+                return;
+            }
+            console.log("Is English " + tweet.isEnglish);
+            if(englishOnly && !tweet.isEnglish){
+                console.log("Return (English)");
+                return;
+            }
+            console.log("Showing Tweet");
             addTweet(tweet)
-            
         });
     
 </script>
 
 <script>
+    //Mood chart
         var ctx = document.getElementById('posCanvas').getContext('2d');
         var color = Chart.helpers.color;
         var fill = ctx.createPattern
@@ -328,13 +386,10 @@ function addTweet(tweet){
     </script>
 
 
-<!-- Tweets -->
-<script>
+    <!-- Tweets -->
+    <script>
 
-    // create the necessary HTML in the block container
-    // $('#tweets').append('<ol id="tweetlist" class="tweet-list stream-items"></ol>');
-    
-        // var e = new EventSource('/events');
+        //Update account popularity list
         e.addEventListener('account', function(d) {
             try {
                     var m = JSON.parse(d.data);
@@ -354,6 +409,7 @@ function addTweet(tweet){
 
         });
 
+        //Update country popularity list
         e.addEventListener('ctry_pop', function(d) {
             try {
                     var m = JSON.parse(d.data);
