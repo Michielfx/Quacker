@@ -7,7 +7,6 @@ from eca.generators import start_offline_tweets
 from textblob import TextBlob
 import datetime
 import textwrap
-from popularity_account_noah import *
 from collections import *
 import operator
 
@@ -43,20 +42,18 @@ def tweet(ctx, e):
     # we receive a tweet
     tweet = e.data
 
-    # ----------------------------
-    # Noah is working on this
-    emit('account', {
-        'action': 'update',
-        'value': pop_at_acc(ctx, tweet)})
-
-    # ----------------------------
-
     # parse date
     time = datetime.datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S %z %Y')
 
     # nicify text
     text = textwrap.fill(tweet['text'],initial_indent='    ', subsequent_indent='    ')
     
+    #MOST POPULAR ADDED
+    emit('account', {
+        'action': 'update',
+        'value': pop_at_acc(ctx, tweet)})
+
+
     #VIEWERMOOD
     #uses a python extension to determine the sentiment of a text
 	#see from textblob import TextBlob, and pip install textblob
@@ -147,3 +144,33 @@ def get_tweet_sentiment(tweet):
         return 'neutral'
     else: 
         return 'negative'
+
+#function that determines the top 10 most popular added accounts
+def pop_at_acc(ctx, tweet):
+
+
+    time = datetime.datetime.strptime(tweet['created_at'], '%a %b %d %H:%M:%S %z %Y')
+
+    # You can mention more than one person per tweet
+    for mention in (tweet["entities"]["user_mentions"]):
+        # If the key doesn't exist we initialize it at 1 otherwise increment it
+        try:
+            ctx.pop_dic[mention["screen_name"]] += 1
+        except:
+            ctx.pop_dic[mention["screen_name"]] = 1
+
+        # We keep track of the increments name+time so that we can decrement after a day has passed
+        ctx.pop_rem.append([mention["screen_name"], time])
+
+    # We go through all the stored tweets, if any are older than one day we decrement and remove it from the list
+    for i, old_tweet in enumerate(ctx.pop_rem):
+        diff = time - old_tweet[1]
+        if diff.days > 0:
+            ctx.pop_dic[old_tweet[0]] -= 1  # This decrements the value
+            ctx.pop_rem = ctx.pop_rem[1:]  # This removes the tweet from the list
+        else:
+            break  # Since the list is ordered from oldest to newest we can stop when tweets are younger than 1 day
+
+    # We need to sort+reverse the dict to get the top 10 most common accounts
+    sort = sorted(ctx.pop_dic.items(), key=operator.itemgetter(1), reverse=True)
+    return sort[:10]  # We return the first 10 elements
