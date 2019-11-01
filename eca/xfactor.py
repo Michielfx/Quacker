@@ -4,11 +4,11 @@ import random
 from profanity_check import predict, predict_prob
 from langdetect import detect
 from eca.generators import start_offline_tweets
+from textblob import TextBlob
 import datetime
 import textwrap
 from popularity_account_noah import *
 from collections import *
-from textblob import TextBlob
 import operator
 
 
