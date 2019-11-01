@@ -57,8 +57,7 @@ def tweet(ctx, e):
     # nicify text
     text = textwrap.fill(tweet['text'],initial_indent='    ', subsequent_indent='    ')
     
-    #GIEL{
-    #MOOD
+    #VIEWERMOOD
     #uses a python extension to determine the sentiment of a text
 	#see from textblob import TextBlob, and pip install textblob
     sentiment = get_tweet_sentiment(text)
@@ -113,7 +112,6 @@ def tweet(ctx, e):
     #emiting a list of up to 5 countries order in popularity from left to right
     emit('ctry_pop',{
          'ctry_value': top5})
-	#}GIEL
     
 
     # generate output
@@ -132,7 +130,6 @@ def tweet(ctx, e):
     tweet['isEnglish'] = isEnglish
     emit('tweets', tweet)
 
-#GIEL{
 #normalizing function for positive and negative counters
 def norm(a,b):
     if (a,b) == (0,0):
@@ -150,4 +147,3 @@ def get_tweet_sentiment(tweet):
         return 'neutral'
     else: 
         return 'negative'
-#GIEL}
